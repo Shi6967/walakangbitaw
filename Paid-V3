@@ -29,7 +29,7 @@ end
 
 -- Create the main window
 local Window = Library:CreateWindow({
-	Title = "Sen UI Library",
+	Title = "SaiLynxShi UI Library",
 	SubTitle = "Version 1.0.0",
 	Size = UDim2.fromOffset(500, 335),
 	TabWidth = 150,
