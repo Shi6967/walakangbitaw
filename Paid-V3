@@ -2,8 +2,7 @@
 -- Loads the UI library from the provided URL and demonstrates every element.
 -- Place this as a LocalScript (StarterPlayerScripts) or execute in a local environment.
 
-local LIB_URL = "https://raw.githubusercontent.com/IzaCantPunch/LuxCyra/refs/heads/main/H"
-
+local LIB_URL = "loadstring(game:HttpGet("https://raw.githubusercontent.com/Shi6967/SpeedShi/refs/heads/main/SaiLyn",true))()"
 -- Attempt to load the remote library
 local ok, a, b, c = pcall(function()
 	-- game:HttpGet may require HttpEnabled in Studio; use what the environment supports
@@ -29,7 +28,7 @@ end
 
 -- Create the main window
 local Window = Library:CreateWindow({
-	Title = "Sen UI Library",
+	Title = "SHI UI Library",
 	SubTitle = "Version 1.0.0",
 	Size = UDim2.fromOffset(500, 335),
 	TabWidth = 150,
