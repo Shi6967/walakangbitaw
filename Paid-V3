@@ -1,0 +1,196 @@
+-- Example_AllElements_FromURL.lua
+-- Loads the UI library from the provided URL and demonstrates every element.
+-- Place this as a LocalScript (StarterPlayerScripts) or execute in a local environment.
+
+local LIB_URL = "https://raw.githubusercontent.com/IzaCantPunch/LuxCyra/refs/heads/main/H"
+
+-- Attempt to load the remote library
+local ok, a, b, c = pcall(function()
+	-- game:HttpGet may require HttpEnabled in Studio; use what the environment supports
+	local source = game:HttpGet(LIB_URL)
+	local fn = loadstring(source)
+	return fn()
+end)
+
+local Library, SaveManager, InterfaceManager
+
+if ok then
+	-- pcall returned true followed by values returned by the module
+	Library, SaveManager, InterfaceManager = a, b, c
+else
+	-- Fallback: try getgenv if module was already loaded there
+	if getgenv and getgenv().Fluent then
+		Library = getgenv().Fluent
+		warn("Loaded library from getgenv().Fluent as fallback.")
+	else
+		error("Failed to load UI library from URL: " .. tostring(a))
+	end
+end
+
+-- Create the main window
+local Window = Library:CreateWindow({
+	Title = "Sen UI Library",
+	SubTitle = "Version 1.0.0",
+	Size = UDim2.fromOffset(500, 335),
+	TabWidth = 150,
+	Theme = "SpeedHubX",
+	Acrylic = false,
+})
+
+-- Create demo tab + section
+local demoTab = Window:AddTab({ Title = "All Elements", Icon = "settings" })
+local demoSection = demoTab:AddSection("Controls")
+
+-- BUTTON: simple click button
+demoSection:AddButton({
+	Title = "Show Notification",
+	Description = "Opens a sample notification.",
+	Callback = function()
+		Library:Notify({
+			Title = "Hello!",
+			Content = "This notification comes from the remote-loaded library.",
+			SubContent = "Duration: 4s",
+			Duration = 4,
+		})
+	end,
+})
+
+-- TOGGLE
+demoSection:AddToggle("Demo_Toggle", {
+	Title = "Demo Toggle",
+	Default = true,
+	Description = "A simple toggle you can save/load.",
+	Callback = function(value)
+		print("[Demo_Toggle] Value:", value)
+	end,
+})
+
+-- DROPDOWN (single-select)
+demoSection:AddDropdown("Demo_Dropdown", {
+	Title = "Demo Dropdown",
+	Description = "Pick a value.",
+	Values = { "Alpha", "Beta", "Gamma", "Delta" },
+	Default = "Beta",
+	Callback = function(value)
+		print("[Demo_Dropdown] Selected:", value)
+	end,
+})
+
+-- PARAGRAPH
+demoSection:AddParagraph({
+	Title = "About this demo",
+	Content = "This section demonstrates each UI element supported by the library loaded from the provided URL. Use the Settings tab to save and load configurations.",
+})
+
+-- SLIDER
+demoSection:AddSlider("Demo_Slider", {
+	Title = "Demo Slider",
+	Description = "Adjust a numeric value.",
+	Min = 0,
+	Max = 100,
+	Default = 50,
+	Rounding = 0,
+	Callback = function(value)
+		print("[Demo_Slider] Value:", value)
+	end,
+})
+
+-- KEYBIND
+demoSection:AddKeybind("Demo_Keybind", {
+	Title = "Demo Keybind (Toggle M)",
+	Default = "M",
+	Mode = "Toggle",
+	Callback = function(toggled)
+		print("[Demo_Keybind] Toggled:", toggled)
+		Window:Minimize()
+	end,
+})
+
+-- COLORPICKER
+demoSection:AddColorpicker("Demo_Color", {
+	Title = "Demo Colorpicker",
+	Description = "Choose an accent color.",
+	Default = Color3.fromRGB(0, 120, 255),
+	Transparency = 0,
+	Callback = function(color)
+		print("[Demo_Color] Color chosen:", color)
+		-- Optional: perform actions with chosen color
+	end,
+})
+
+-- INPUT
+demoSection:AddInput("Demo_Input", {
+	Title = "Demo Input",
+	Default = "",
+	Placeholder = "Type something here",
+	Callback = function(text)
+		print("[Demo_Input] Text:", text)
+	end,
+})
+
+-- DIALOGS & EXTRAS SECTION
+local dialogSection = demoTab:AddSection("Dialogs & Extras")
+
+dialogSection:AddButton({
+	Title = "Open Dialog",
+	Description = "Shows a dialog with Yes/No.",
+	Callback = function()
+		Window:Dialog({
+			Title = "Confirm action",
+			Content = "Do you want to proceed with the demo action?",
+			Buttons = {
+				{
+					Title = "Yes",
+					Callback = function()
+						Library:Notify({
+							Title = "Confirmed",
+							Content = "You clicked Yes.",
+							Duration = 3,
+						})
+					end,
+				},
+				{ Title = "No" },
+			},
+		})
+	end,
+})
+
+dialogSection:AddButton({
+	Title = "Create sample notification",
+	Callback = function()
+		Library:Notify({
+			Title = "Sample",
+			Content = "This notification was created from an example that loads the library remotely.",
+			Duration = 6,
+		})
+	end,
+})
+
+-- SETTINGS TAB: Persistence and Interface controls
+local settingsTab = Window:AddTab({ Title = "Settings", Icon = "file" })
+
+if InterfaceManager then
+	InterfaceManager:SetLibrary(Library)
+	InterfaceManager:SetFolder("ExampleUI_Settings")
+	InterfaceManager:BuildInterfaceSection(settingsTab)
+else
+	warn("InterfaceManager not available from the remote library; interface settings UI skipped.")
+end
+
+if SaveManager then
+	SaveManager:SetLibrary(Library)
+	SaveManager:SetFolder("ExampleUI_Configs")
+	SaveManager:BuildConfigSection(settingsTab)
+	SaveManager:LoadAutoloadConfig()
+else
+	warn("SaveManager not available from the remote library; config UI skipped.")
+end
+
+-- Show a startup notification and select the demo tab
+Library:Notify({
+	Title = "Fluent UI Demo",
+	Content = "Demo loaded from URL. Try toggles, dropdowns, sliders, keybinds, color pickers and save/load in Settings if available.",
+	Duration = 6,
+})
+
+Window:SelectTab(1)
