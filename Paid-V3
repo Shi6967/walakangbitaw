@@ -637,12 +637,9 @@ rebirthSection:AddButton({
 })
 
 local toolsTab = Window:AddTab({ Title = "Tools", Icon = "gear" })
+local toolsSection = toolsTab:AddSection("Auto Tools")
 
-toolsTab:AddLabel({Title = "Farm Whiteout Packs"}) 
-
-local autoEquipToolsFolder = toolsTab:AddSection("Auto Tools") 
-
-autoEquipToolsFolder:AddButton({
+ toolsSection:AddButton({
     Title = "Gamepass AutoLift",
     Description = "Lokal na ia-unlock lahat ng gamepasses na makikita sa ReplicatedStorage.",
     Callback = function()
@@ -665,7 +662,7 @@ autoEquipToolsFolder:AddButton({
 })
 
 local function createAutoToolSwitch(toolName, globalVar)
-    autoEquipToolsFolder:AddToggle(globalVar, {
+    toolsSection:AddToggle(globalVar, {
         Title = "Auto " .. toolName,
         Description = "I-e-equip at auto-rep sa '" .. toolName .. "' tool.",
         Default = false,
@@ -702,7 +699,7 @@ createAutoToolSwitch("Handstands", "AutoHandstands")
 createAutoToolSwitch("Situps", "AutoSitups")
 
 
-autoEquipToolsFolder:AddToggle("AutoPunchToggle", {
+toolsSection:AddToggle("AutoPunchToggle", {
     Title = "Auto Punch",
     Description = "Awtomatikong magpapadala ng fast punch sa pamamagitan ng pag-reset ng attack time.",
     Default = false,
@@ -750,7 +747,7 @@ autoEquipToolsFolder:AddToggle("AutoPunchToggle", {
     end,
 })
 
-autoEquipToolsFolder:AddToggle("FastToolsToggle", {
+toolsSection:AddToggle("FastToolsToggle", {
     Title = "Fast Tools",
     Description = "Ise-set ang tool cooldowns (repTime/attackTime) sa 0 para sa instant use.",
     Default = false,
