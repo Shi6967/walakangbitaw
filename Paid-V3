@@ -795,7 +795,7 @@ local function gettool()
     game:GetService("Players").LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
 end
 
-local legendGymRockSwitch = toolsSection:AddSwitch("Farm Legend Gym Rock", function(bool)
+local toolsSection = toolsTab:AddSwitch("Farm Legend Gym Rock", function(bool)
     selectrock = "Legend Gym Rock"
     getgenv().autoFarm = bool
  
@@ -822,7 +822,7 @@ local legendGymRockSwitch = toolsSection:AddSwitch("Farm Legend Gym Rock", funct
     end
 end)
  
-local muscleKingGymRockSwitch = toolsSection:AddSwitch("Farm Muscle King Gym Rock", function(bool)
+local toolsSection = toolsTab:AddSwitch("Farm Muscle King Gym Rock", function(bool)
     selectrock = "Muscle King Gym Rock"
     getgenv().autoFarm = bool
  
@@ -849,7 +849,7 @@ local muscleKingGymRockSwitch = toolsSection:AddSwitch("Farm Muscle King Gym Roc
     end
 end)
  
-local ancientJungleRockSwitch = toolsSection:AddSwitch("Farm Ancient Jungle Rock", function(bool)
+local toolsSection = toolsTab:AddSwitch("Farm Ancient Jungle Rock", function(bool)
     selectrock = "Ancient Jungle Rock"
     getgenv().autoFarm = bool
  
