@@ -536,21 +536,21 @@ local rebirthsStat = leaderstats:WaitForChild("Rebirths")
 local startTime = tick()
 local sessionRebirths = rebirthsStat.Value
 
-local timeHeader = rebirthSection:AddParagraph({ Title = "TIME ELAPSED", Content = "" })
+local timeHeader = rebirthTab:AddParagraph({ Title = "TIME ELAPSED", Content = "" })
 timeHeader.TextSize = 14
 
-local stopwatchLabel = rebirthSection:AddLabel("RebirthStopwatch", {Title = "0d 0h 0m 0s", Description = ""})
+local stopwatchLabel = rebirthTab:AddLabel("RebirthStopwatch", {Title = "0d 0h 0m 0s", Description = ""})
 stopwatchLabel:SetTextSize(20)
 
-rebirthSection:AddParagraph({ Title = "", Content = "" })
+rebirthTab:AddParagraph({ Title = "", Content = "" })
 
-local gainedHeader = rebirthSection:AddParagraph({ Title = "REBIRTHS GAINED", Content = "" })
+local gainedHeader = rebirthTab:AddParagraph({ Title = "REBIRTHS GAINED", Content = "" })
 gainedHeader.TextSize = 14
 
-local gainedLabel = rebirthSection:AddLabel("GainedRebirths", {Title = "Gained Rebirths: 0", Description = ""})
+local gainedLabel = rebirthTab:AddLabel("GainedRebirths", {Title = "Gained Rebirths: 0", Description = ""})
 gainedLabel:SetTextSize(20)
 
-rebirthSection:AddParagraph({ Title = "", Content = "" })
+rebirthTab:AddParagraph({ Title = "", Content = "" })
 
 task.spawn(function()
     while task.wait(1) do
