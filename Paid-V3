@@ -92,7 +92,7 @@ local function hitRock()
 end
 
 local function eatProteinEggNew()
-    local player = game.Players.LocalPlayer
+    local player = game:GetService("Players").LocalPlayer
     local backpack = player:WaitForChild("Backpack")
     local character = player.Character or player.CharacterAdded:Wait()
 
@@ -170,7 +170,7 @@ local Window = Library:CreateWindow({
 })
 
 local autoFarmTab = Window:AddTab({ Title = "Farm OP", Icon = "flame" })
-local farmSection = autoFarmTab:AddSection("Fuerza OP")
+local farmSection = autoFarmTab:AddSection("Farm OP")
 
 farmSection:AddToggle("OP_STRENGTH_TOGGLE", {
 	Title = "OP STRENGTH",
@@ -195,7 +195,7 @@ farmSection:AddToggle("EAT_EGG_TOGGLE", {
 farmSection:AddToggle("ANTI_LAG_TOGGLE", {
 	Title = "Anti Lag",
 	Description = "Removes GUIs, particles, lights, and sets a dark sky for max FPS.",
-	Default = false,
+		Default = false,
 	Callback = function(State)
         getgenv().ANTI_LAG_TOGGLE = State
 		if State then
@@ -536,37 +536,6 @@ local rebirthsStat = leaderstats:WaitForChild("Rebirths")
 local startTime = tick()
 local sessionRebirths = rebirthsStat.Value
 
-local timeHeader = rebirthTab:AddParagraph({ Title = "TIME ELAPSED", Content = "" })
-timeHeader.TextSize = 14
-
-local stopwatchLabel = rebirthTab:AddLabel("RebirthStopwatch", {Title = "0d 0h 0m 0s", Description = ""})
-stopwatchLabel:SetTextSize(20)
-
-rebirthTab:AddParagraph({ Title = "", Content = "" })
-
-local gainedHeader = rebirthTab:AddParagraph({ Title = "REBIRTHS GAINED", Content = "" })
-gainedHeader.TextSize = 14
-
-local gainedLabel = rebirthTab:AddLabel("GainedRebirths", {Title = "Gained Rebirths: 0", Description = ""})
-gainedLabel:SetTextSize(20)
-
-rebirthTab:AddParagraph({ Title = "", Content = "" })
-
-task.spawn(function()
-    while task.wait(1) do
-        local elapsed = tick() - startTime
-        local days = math.floor(elapsed / 86400)
-        local hours = math.floor((elapsed % 86400) / 3600)
-        local minutes = math.floor((elapsed % 3600) / 60)
-        local seconds = math.floor(elapsed % 60)
-        
-        stopwatchLabel:SetText(string.format("%dd %dh %dm %ds", days, hours, minutes, seconds))
-
-        local gainedRebirths = rebirthsStat.Value - sessionRebirths
-        gainedLabel:SetText("Gained Rebirths: " .. tostring(gainedRebirths))
-    end
-end)
-
 rebirthSection:AddToggle("FAST_REBIRTHS", {
     Title = "Fast Rebirths",
     Description = "Automatically farms strength and rebirthes when requirements are met.",
@@ -712,7 +681,7 @@ rebirthSection:AddButton({
     Title = "Teleport & Lift (Jungle)",
     Description = "Teleports to Jungle Lift machine and attempts to use 'E' key to interact.",
     Callback = function()
-        local player = game.Players.LocalPlayer
+        local player = game:GetService("Players").LocalPlayer
         local char = player.Character or player.CharacterAdded:Wait()
         local hrp = char:WaitForChild("HumanoidRootPart")
 
