@@ -636,15 +636,36 @@ rebirthSection:AddButton({
 	end,
 })
 
+_G.AutoWeight = false
+_G.AutoPushups = false
+_G.AutoHandstands = false
+_G.AutoSitups = false
+_G.fastHitActive = false
+_G.FastTools = false
+_G.autoFarm = false
+
+_G.targetRebirthActive = false
+_G.infiniteRebirthActive = false
+_G.autoSizeActive = false
+_G.teleportActive = false
+
+local targetRebirthValue = 1
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
+local function updateStats()
+end
+
 local toolsTab = Window:AddTab({ Title = "Tools", Icon = "gear" })
+local rebirthsTab = Window:AddTab({ Title = "Rebirths", Icon = "refresh" })
+
 local toolsSection = toolsTab:AddSection("Auto Tools")
 
- toolsSection:AddButton({
+toolsSection:AddButton({
     Title = "Gamepass AutoLift",
     Description = "Lokal na ia-unlock lahat ng gamepasses na makikita sa ReplicatedStorage.",
     Callback = function()
         local gamepassFolder = game:GetService("ReplicatedStorage").gamepassIds
-        local player = game:GetService("Players").LocalPlayer
+        local player = LocalPlayer
         
         if not player:FindFirstChild("ownedGamepasses") then
             local folder = Instance.new("Folder")
@@ -672,23 +693,27 @@ local function createAutoToolSwitch(toolName, globalVar)
 
             if Value then
                 local tool = LocalPlayer.Backpack:FindFirstChild(toolName)
-                if tool and character then
+                if tool and character and character.Humanoid then
                     character.Humanoid:EquipTool(tool)
                 end
+                
+                task.spawn(function()
+                    while _G[globalVar] do
+                        if not _G[globalVar] then break end
+                        
+                        local equipped = character and character:FindFirstChild(toolName)
+                        if equipped then
+                            LocalPlayer.muscleEvent:FireServer("rep")
+                        end
+                        task.wait(0.1)
+                    end
+                end)
             else
                 local equipped = character and character:FindFirstChild(toolName)
                 if equipped then
                     equipped.Parent = LocalPlayer.Backpack
                 end
             end
-            
-            task.spawn(function()
-                while _G[globalVar] do
-                    if not _G[globalVar] then break end
-                    LocalPlayer.muscleEvent:FireServer("rep")
-                    task.wait(0.1)
-                end
-            end)
         end,
     })
 end
@@ -716,8 +741,9 @@ toolsSection:AddToggle("AutoPunchToggle", {
                     local punch = backpack:FindFirstChild("Punch")
                     if punch then
                         punch.Parent = character
-                        if punch:FindFirstChild("attackTime") then
-                            punch.attackTime.Value = 0
+                        local attackTime = punch:FindFirstChild("attackTime")
+                        if attackTime then
+                            attackTime.Value = 0
                         end
                     end
                     task.wait(0.1)
@@ -773,13 +799,19 @@ toolsSection:AddToggle("FastToolsToggle", {
             local targetValue = toolInfo[3]
 
             local toolInBackpack = backpack:FindFirstChild(toolName)
-            if toolInBackpack and toolInBackpack:FindFirstChild(valueName) then
-                toolInBackpack[valueName].Value = targetValue
+            if toolInBackpack then
+                local valueObject = toolInBackpack:FindFirstChild(valueName)
+                if valueObject then
+                    valueObject.Value = targetValue
+                end
             end
 
             local equippedTool = character and character:FindFirstChild(toolName)
-            if equippedTool and equippedTool:FindFirstChild(valueName) then
-                equippedTool[valueName].Value = targetValue
+            if equippedTool then
+                local valueObject = equippedTool:FindFirstChild(valueName)
+                if valueObject then
+                    valueObject.Value = targetValue
+                end
             end
         end
     end,
@@ -842,9 +874,9 @@ createRockFarmSwitch("Legend Gym Rock", 1000000)
 createRockFarmSwitch("Muscle King Gym Rock", 5000000)
 createRockFarmSwitch("Ancient Jungle Rock", 10000000)
 
-local toolsSection = toolsTab:AddSection("Rebirth Controls")
+local rebirthsFolder = rebirthsTab:AddSection("Rebirth Controls")
 
-toolsSection:AddTextBox("Rebirth Target", function(text)
+rebirthsFolder:AddTextBox("Rebirth Target", function(text)
     local newValue = tonumber(text)
     if newValue and newValue > 0 then
         targetRebirthValue = newValue
@@ -866,7 +898,7 @@ end)
 
 local infiniteSwitch
 
-local targetSwitch = toolsSection:AddToggle("Auto Rebirth Target", {
+local targetSwitch = rebirthsFolder:AddToggle("Auto Rebirth Target", {
     Description = "Renacimiento automático hanggang maabot ang target.",
     Default = false,
     Callback = function(bool)
@@ -904,7 +936,7 @@ local targetSwitch = toolsSection:AddToggle("Auto Rebirth Target", {
     end,
 })
 
-infiniteSwitch = toolsSection:AddToggle("Auto Rebirth (Infinite)", {
+infiniteSwitch = rebirthsFolder:AddToggle("Auto Rebirth (Infinite)", {
     Description = "Renacimiento tuloy-tuloy nang walang tigil.",
     Default = false,
     Callback = function(bool)
@@ -925,7 +957,7 @@ infiniteSwitch = toolsSection:AddToggle("Auto Rebirth (Infinite)", {
     end,
 })
 
-toolsSection:AddToggle("Auto Size 1", {
+rebirthsFolder:AddToggle("Auto Size 1", {
     Description = "Itinatakda ang laki ng character sa 1 nang tuloy-tuloy.",
     Default = false,
     Callback = function(bool)
@@ -941,7 +973,7 @@ toolsSection:AddToggle("Auto Size 1", {
     end,
 })
 
-toolsSection:AddToggle("Auto Teleport to Muscle King", {
+rebirthsFolder:AddToggle("Auto Teleport to Muscle King", {
     Description = "Tuloy-tuloy na pag-teleport sa Muscle King.",
     Default = false,
     Callback = function(bool)
