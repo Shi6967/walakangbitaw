@@ -175,8 +175,8 @@ end)
 local Window = Library:CreateWindow({
 	Title = "SAILYNxSHI AutoFarm",
 	SubTitle = "Complete Grinding Suite",
-	Size = UDim2.fromOffset(500, 335),
-	TabWidth = 150,
+	Size = UDim2.fromOffset(450,350),
+	TabWidth = 160,
 	Theme = "SpeedHubX",
 	Acrylic = false,
 })
