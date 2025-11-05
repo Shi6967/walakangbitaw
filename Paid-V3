@@ -959,7 +959,6 @@ toolsSection:AddToggle("Auto Teleport to Muscle King", {
     end,
 })
 
-
 Library:Notify({
 	Title = "AutoFarm Finalized",
 	Content = "All tabs and functionalities loaded successfully.",
