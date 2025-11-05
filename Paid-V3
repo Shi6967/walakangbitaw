@@ -842,6 +842,7 @@ createRockFarmSwitch("Legend Gym Rock", 1000000)
 createRockFarmSwitch("Muscle King Gym Rock", 5000000)
 createRockFarmSwitch("Ancient Jungle Rock", 10000000)
 
+local toolsSection = toolsTab:AddSection("Rebirth Controls")
 
 toolsSection:AddTextBox("Rebirth Target", function(text)
     local newValue = tonumber(text)
@@ -957,6 +958,7 @@ toolsSection:AddToggle("Auto Teleport to Muscle King", {
         end
     end,
 })
+
 
 Library:Notify({
 	Title = "AutoFarm Finalized",
