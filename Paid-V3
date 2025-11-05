@@ -656,7 +656,6 @@ local function updateStats()
 end
 
 local toolsTab = Window:AddTab({ Title = "Tools", Icon = "gear" })
-local rebirthsTab = Window:AddTab({ Title = "Rebirths", Icon = "refresh" })
 
 local toolsSection = toolsTab:AddSection("Auto Tools")
 
@@ -874,9 +873,9 @@ createRockFarmSwitch("Legend Gym Rock", 1000000)
 createRockFarmSwitch("Muscle King Gym Rock", 5000000)
 createRockFarmSwitch("Ancient Jungle Rock", 10000000)
 
-local rebirthsFolder = rebirthsTab:AddSection("Rebirth Controls")
+local rebirthsSection = toolsTab:AddSection("Rebirth Controls")
 
-rebirthsFolder:AddTextBox("Rebirth Target", function(text)
+rebirthsSection:AddTextBox("Rebirth Target", function(text)
     local newValue = tonumber(text)
     if newValue and newValue > 0 then
         targetRebirthValue = newValue
@@ -898,7 +897,7 @@ end)
 
 local infiniteSwitch
 
-local targetSwitch = rebirthsFolder:AddToggle("Auto Rebirth Target", {
+local targetSwitch = rebirthsSection:AddToggle("Auto Rebirth Target", {
     Description = "Renacimiento automático hanggang maabot ang target.",
     Default = false,
     Callback = function(bool)
@@ -936,7 +935,7 @@ local targetSwitch = rebirthsFolder:AddToggle("Auto Rebirth Target", {
     end,
 })
 
-infiniteSwitch = rebirthsFolder:AddToggle("Auto Rebirth (Infinite)", {
+infiniteSwitch = rebirthsSection:AddToggle("Auto Rebirth (Infinite)", {
     Description = "Renacimiento tuloy-tuloy nang walang tigil.",
     Default = false,
     Callback = function(bool)
@@ -957,7 +956,7 @@ infiniteSwitch = rebirthsFolder:AddToggle("Auto Rebirth (Infinite)", {
     end,
 })
 
-rebirthsFolder:AddToggle("Auto Size 1", {
+rebirthsSection:AddToggle("Auto Size 1", {
     Description = "Itinatakda ang laki ng character sa 1 nang tuloy-tuloy.",
     Default = false,
     Callback = function(bool)
@@ -973,7 +972,7 @@ rebirthsFolder:AddToggle("Auto Size 1", {
     end,
 })
 
-rebirthsFolder:AddToggle("Auto Teleport to Muscle King", {
+rebirthsSection:AddToggle("Auto Teleport to Muscle King", {
     Description = "Tuloy-tuloy na pag-teleport sa Muscle King.",
     Default = false,
     Callback = function(bool)
