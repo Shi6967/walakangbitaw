@@ -941,7 +941,7 @@ toolsSection:AddToggle("Auto Size 1", {
     end,
 })
 
-toolsSection:AddToggle("Auto Teleport to Muscle King", {
+toolsSectiossn:AddToggle("Auto Teleport to Muscle King", {
     Description = "Tuloy-tuloy na pag-teleport sa Muscle King.",
     Default = false,
     Callback = function(bool)
