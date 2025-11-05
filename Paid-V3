@@ -865,8 +865,6 @@ rebirthsSection:AddTextBox("Rebirth Target", function(text)
     end
 end)
 
-local infiniteSwitch
-
 local targetSwitch = RebirthsSection:AddToggle("Auto Rebirth Target", {
     Description = "Renacimiento automÃ¡tico hanggang maabot ang target.",
     Default = false,
