@@ -181,7 +181,7 @@ local Window = Library:CreateWindow({
 	Acrylic = false,
 })
 
-local autoFarmTab = Window:AddTab({ Title = "Farm OP", Icon = "flame })
+local autoFarmTab = Window:AddTab({ Title = "Farm OP", Icon = "flame" })
 local farmSection = autoFarmTab:AddSection("Farm OP")
 
 farmSection:AddToggle("OP_STRENGTH_TOGGLE", {
