@@ -19,199 +19,7 @@ else
 	end
 end
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CoreGui = game:GetService("CoreGui")
-local Stats = game:GetService("Stats")
-
-local AntiAfk_UI_Name = "AntiAfk_UI_Container"
-getgenv().AntiAfkExecuted = false
-getgenv().zamanbaslaticisi = false
-getgenv().AutoFarming = false
-getgenv()._AutoRepFarmEnabled = false
-_G.AutoSpinWheel = false
-
-local function DestroyAntiAfkUI()
-    getgenv().AntiAfkExecuted = false
-    getgenv().zamanbaslaticisi = false
-    local container = CoreGui:FindFirstChild(AntiAfk_UI_Name)
-    if container then container:Destroy() end
-end
-
-local function CreateAntiAfkUI()
-    getgenv().AntiAfkExecuted = true
-    getgenv().zamanbaslaticisi = true
-
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = AntiAfk_UI_Name
-    ScreenGui.DisplayOrder = 999
-    ScreenGui.Parent = CoreGui
-
-    local MainFrame = Instance.new("Frame")
-    MainFrame.Name = "AntiAfkFrame"
-    MainFrame.Parent = ScreenGui
-    MainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-    MainFrame.Position = UDim2.new(0.085, 0, 0.13, 0)
-    MainFrame.Size = UDim2.new(0, 225, 0, 96)
-
-    local Corner = Instance.new("UICorner", MainFrame)
-    Corner.CornerRadius = UDim.new(0, 5)
-
-    local LineFrame = Instance.new("Frame", MainFrame)
-    LineFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    LineFrame.Position = UDim2.new(0.004, 0, 0.24, 0)
-    LineFrame.Size = UDim2.new(0, 224, 0, 5)
-    Instance.new("UICorner", LineFrame).CornerRadius = UDim.new(0, 50)
-
-    local TitleLabel = Instance.new("TextLabel", MainFrame)
-    TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Position = UDim2.new(0.3, 0, 0, 0)
-    TitleLabel.Size = UDim2.new(0, 95, 0, 24)
-    TitleLabel.Font = Enum.Font.SourceSans
-    TitleLabel.Text = "Anti Afk Script"
-    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.TextSize = 14
-
-    local StatusLabel = Instance.new("TextLabel", MainFrame)
-    StatusLabel.BackgroundTransparency = 1
-    StatusLabel.Position = UDim2.new(0.05, 0, 0.81, 0)
-    StatusLabel.Size = UDim2.new(0, 150, 0, 12)
-    StatusLabel.Font = Enum.Font.SourceSans
-    StatusLabel.Text = "Anti-Afk Auto Enabled"
-    StatusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    StatusLabel.TextSize = 14
-
-    local PingStaticLabel = Instance.new("TextLabel", MainFrame)
-    PingStaticLabel.BackgroundTransparency = 1
-    PingStaticLabel.Position = UDim2.new(0.03, 0, 0.37, 0)
-    PingStaticLabel.Size = UDim2.new(0, 29, 0, 24)
-    PingStaticLabel.Font = Enum.Font.SourceSans
-    PingStaticLabel.Text = "Ping: "
-    PingStaticLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    PingStaticLabel.TextSize = 14
-
-    local PingValueLabel = Instance.new("TextLabel", MainFrame)
-    PingValueLabel.Name = "pinglabel"
-    PingValueLabel.BackgroundTransparency = 1
-    PingValueLabel.Position = UDim2.new(0.2, 0, 0.37, 0)
-    PingValueLabel.Size = UDim2.new(0, 55, 0, 24)
-    PingValueLabel.Font = Enum.Font.SourceSans
-    PingValueLabel.Text = "0"
-    PingValueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    PingValueLabel.TextSize = 14
     
-    local FPSStaticLabel = Instance.new("TextLabel", MainFrame)
-    FPSStaticLabel.BackgroundTransparency = 1
-    FPSStaticLabel.Position = UDim2.new(0.5, 0, 0.35, 0)
-    FPSStaticLabel.Size = UDim2.new(0, 26, 0, 24)
-    FPSStaticLabel.Font = Enum.Font.SourceSans
-    FPSStaticLabel.Text = "Fps: "
-    FPSStaticLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    FPSStaticLabel.TextSize = 14
-
-    local FPSValueLabel = Instance.new("TextLabel", MainFrame)
-    FPSValueLabel.Name = "fpslabel"
-    FPSValueLabel.BackgroundTransparency = 1
-    FPSValueLabel.Position = UDim2.new(0.72, 0, 0.35, 0)
-    FPSValueLabel.Size = UDim2.new(0, 55, 0, 24)
-    FPSValueLabel.Font = Enum.Font.SourceSans
-    FPSValueLabel.Text = "0"
-    FPSValueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    FPSValueLabel.TextSize = 14
-    
-    local TimerLabel = Instance.new("TextLabel", MainFrame)
-    TimerLabel.Name = "timerlabel"
-    TimerLabel.BackgroundTransparency = 1
-    TimerLabel.Position = UDim2.new(0.65, 0, 0.68, 0)
-    TimerLabel.Size = UDim2.new(0, 60, 0, 24)
-    TimerLabel.Font = Enum.Font.SourceSans
-    TimerLabel.Text = "0:0:0"
-    TimerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TimerLabel.TextSize = 14
-
-    local DestroyBtn = Instance.new("TextButton", MainFrame)
-    DestroyBtn.Name = "DestroyButton"
-    DestroyBtn.BackgroundTransparency = 1
-    DestroyBtn.Position = UDim2.new(0.87, 0, 0.02, 0)
-    DestroyBtn.Size = UDim2.new(0, 27, 0, 15)
-    DestroyBtn.Font = Enum.Font.SourceSans
-    DestroyBtn.Text = "X"
-    DestroyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    DestroyBtn.TextSize = 14
-    DestroyBtn.MouseButton1Click:Connect(DestroyAntiAfkUI)
-
-    local dragging, dragInput, dragStart, startPos
-    local function update(input)
-        local delta = input.Position - dragStart
-        local SmoothDrag = {}
-        SmoothDrag.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        TweenService:Create(MainFrame, TweenInfo.new(0.04, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), SmoothDrag):Play()
-    end
-    MainFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = MainFrame.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then dragging = false end
-            end)
-        end
-    end)
-    MainFrame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
-    UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then update(input) end
-    end)
-
-    local vu = game:GetService('VirtualUser')
-    LocalPlayer.Idled:Connect(function()
-        if getgenv().AntiAfkExecuted then
-            vu:CaptureController()
-            vu:ClickButton2(Vector2.new())
-        end
-    end)
-
-    local sec = tick()
-    local FPS = {}
-    RunService.RenderStepped:Connect(function()
-        if not getgenv().AntiAfkExecuted then return end
-        local fr = tick()
-        for i=#FPS, 1, -1 do FPS[i+1] = (FPS[i] >= fr - 1) and FPS[i] or nil end
-        FPS[1] = fr
-        local fps = math.floor((tick() - sec >= 1 and #FPS) or (#FPS / (tick() - sec)))
-        FPSValueLabel.Text = fps
-    end)
-
-    task.spawn(function()
-        while getgenv().AntiAfkExecuted do
-            task.wait(1)
-            local pingStats = Stats:FindFirstChild("PerformanceStats")
-            if pingStats and pingStats.Ping then
-                local ping = math.floor(tonumber(pingStats.Ping:GetValue()))
-                PingValueLabel.Text = ping
-            end
-        end
-    end)
-
-    local saniye, dakika, saat = 0, 0, 0
-    task.spawn(function()
-        while getgenv().zamanbaslaticisi do
-            saniye = saniye + 1
-            task.wait(1)
-            if saniye >= 60 then saniye = 0; dakika = dakika + 1 end
-            if dakika >= 60 then dakika = 0; saat = saat + 1 end
-            TimerLabel.Text = saat .. ":" .. dakika .. ":" .. saniye
-        end
-    end)
-end
-
 local Window = Library:CreateWindow({
     Title = "SAILYNxSHI rawr",
     SubTitle = "SHI Pie x Cream Fyy",
@@ -222,252 +30,28 @@ local Window = Library:CreateWindow({
 })
 
 
-local Farm  = Window:AddTab({Title = "OP Farm",    Icon = "axe"})
-local StatsTab = Window:AddTab({Title = "Stats", Icon = "bar-chart-2"})
-local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})
-local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})
-local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})
-local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})
+local Window = Window:AddTab({Title = "OP Farm", Icon = "axe"})
 
+local FarmSection = Window:AddSection("Farm OP")
 
-Farm:AddToggle("Anti AFK (Auto Click)", false, function(state)
-    if state then
-        CreateAntiAfkUI()
-    else
-        DestroyAntiAfkUI()
-    end
-end)
-
-
-Farm:AddSwitch("Hide All Frames", false, function(bool)
-    for _, obj in pairs(ReplicatedStorage:GetChildren()) do
-        if obj.Name:match("Frame$") then
-            obj.Visible = not bool
-        end
-    end
-end)
-
-
-Farm:AddToggle("Auto Spin Fortune Wheel", false, function(state)
-    _G.AutoSpinWheel = state
-    if state then
-        task.spawn(function()
-            while _G.AutoSpinWheel and task.wait(0.1) do
-                ReplicatedStorage.rEvents.openFortuneWheelRemote:InvokeServer(
-                    "openFortuneWheel",
-                    ReplicatedStorage.fortuneWheelChances["Fortune Wheel"]
-                )
-            end
-        end)
-    end
-end)
-
-
-Farm:AddButton("Equip 8 Swift Samurai", function()
-    local petsFolder = LocalPlayer:FindFirstChild("petsFolder")
-    if not petsFolder then return end
-
-    for _, folder in pairs(petsFolder:GetChildren()) do
-        if folder:IsA("Folder") then
-            for _, pet in pairs(folder:GetChildren()) do
-                ReplicatedStorage.rEvents.equipPetEvent:FireServer("unequipPet", pet)
-            end
-        end
-    end
-    task.wait(0.1)
-
-    local equipped = 0
-    local maxEquip = 8
-    for _, folder in pairs(petsFolder:GetChildren()) do
-        if folder:IsA("Folder") then
-            for _, pet in pairs(folder:GetChildren()) do
-                if pet.Name == "Swift Samurai" then
-                    ReplicatedStorage.rEvents.equipPetEvent:FireServer("equipPet", pet)
-                    equipped = equipped + 1
-                    if equipped >= maxEquip then return end
-                end
-            end
-        end
-    end
-end)
-
-
-Farm:AddButton("Teleport & Jungle Squat", function()
-    local char = LocalPlayer.Character
-    if char and char:FindFirstChild("HumanoidRootPart") then
-        char:SetPrimaryPartCFrame(CFrame.new(-8374.25586, 34.5933418, 2932.44995))
-        
-        local machine = workspace:FindFirstChild("machinesFolder")
-        if machine and machine:FindFirstChild("Jungle Squat") then
-            local seat = machine["Jungle Squat"]:FindFirstChild("interactSeat")
-            if seat then
-                ReplicatedStorage.rEvents.machineInteractRemote:InvokeServer("useMachine", seat)
-            end
-        end
-    end
-end)
-
-local RebirthFolder = Farm:AddFolder("OP Rebirth")
-
-RebirthFolder:AddToggle("Fast Rebirths (Auto Train/Rebirth)", false, function(state)
-    getgenv().AutoFarming = state
-    if state then
-        task.spawn(function()
-            local a = ReplicatedStorage
-            local c = LocalPlayer
-            local function equipPetByName(name)
-                local folderPets = c:FindFirstChild("petsFolder")
-                if not folderPets then return end
-                for _, folder in pairs(folderPets:GetChildren()) do
-                    if folder:IsA("Folder") then
-                        for _, pet in pairs(folder:GetChildren()) do
-                            if pet.Name == name then
-                                a.rEvents.equipPetEvent:FireServer("equipPet", pet)
-                            end
-                        end
-                    end
-                end
-            end
-            local function unequipAllPets()
-                local f = c:FindFirstChild("petsFolder")
-                if not f then return end
-                for _, folder in pairs(f:GetChildren()) do
-                    if folder:IsA("Folder") then
-                        for _, pet in pairs(folder:GetChildren()) do
-                            a.rEvents.equipPetEvent:FireServer("unequipPet", pet)
-                        end
-                    end
-                end
-                task.wait(0.1)
-            end
-            local function getGoldenRebirthCount()
-                local g = c:FindFirstChild("ultimatesFolder")
-                if g and g:FindFirstChild("Golden Rebirth") then
-                    return g["Golden Rebirth"].Value
-                end
-                return 0
-            end
-            local function getStrengthRequiredForRebirth()
-                local rebirths = c.leaderstats.Rebirths.Value
-                local baseStrength = 10000 + (5000 * rebirths)
-                local golden = getGoldenRebirthCount()
-                if golden >= 1 and golden <= 5 then
-                    baseStrength = baseStrength * (1 - golden * 0.1)
-                end
-                return math.floor(baseStrength)
-            end
-            while getgenv().AutoFarming do
-                local requiredStrength = getStrengthRequiredForRebirth()
-                unequipAllPets()
-                equipPetByName("Swift Samurai")
-                while c.leaderstats.Strength.Value < requiredStrength and getgenv().AutoFarming do
-                    for _ = 1, 10 do
-                        c.muscleEvent:FireServer("rep")
-                    end
-                    task.wait()
-                end
-                
-                if getgenv().AutoFarming then
-                    unequipAllPets()
-                    equipPetByName("Tribal Overlord")
-                    local oldRebirths = c.leaderstats.Rebirths.Value
-                    repeat
-                        a.rEvents.rebirthRemote:InvokeServer("rebirthRequest")
-                        task.wait(0.1)
-                    until c.leaderstats.Rebirths.Value > oldRebirths or not getgenv().AutoFarming
-                end
-                task.wait()
-            end
-        end)
-    end
-end)
-
-RebirthFolder:AddSwitch("Lock Position (Anti Push)", false, function(Value)
-    if Value then
-        local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-        local currentPos = char and char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.CFrame
-        if currentPos then
-            getgenv().posLock = RunService.Heartbeat:Connect(function()
-                if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                    LocalPlayer.Character.HumanoidRootPart.CFrame = currentPos
-                end
-            end)
-        end
-    else
-        if getgenv().posLock then
-            getgenv().posLock:Disconnect()
-            getgenv().posLock = nil
-        end
-    end
-end)
-
-RebirthFolder:AddButton("Anti Lag (Full Optimization)", function()
-    for _, v in pairs(game:GetDescendants()) do
-        if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
-            v.Enabled = false
-        end
-    end
-
-    local lighting = game:GetService("Lighting")
-    lighting.GlobalShadows = false
-    lighting.FogEnd = 9e9
-    lighting.Brightness = 0
-
-    settings().Rendering.QualityLevel = 1
-
-    for _, v in pairs(game:GetDescendants()) do
-        if v:IsA("Decal") or v:IsA("Texture") then
-            v.Transparency = 1
-        elseif v:IsA("BasePart") and not v:IsA("MeshPart") then
-            v.Material = Enum.Material.SmoothPlastic
-            if v.Parent and (v.Parent:FindFirstChild("Humanoid") or v.Parent.Parent:FindFirstChild("Humanoid")) then
-            else
-                v.Reflectance = 0
-            end
-        end
-    end
-
-    for _, v in pairs(lighting:GetChildren()) do
-        if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("DepthOfFieldEffect") then
-            v.Enabled = false
-        end
-    end
-
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Anti Lag Activated",
-        Text = "Full optimization applied!",
-        Duration = 5
-    })
-end)
-
-RebirthFolder:AddButton("Teleport & Jungle Lift", function()
-    local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local hrp = char:WaitForChild("HumanoidRootPart")
-
-    hrp.CFrame = CFrame.new(-8652.8672, 29.2667, 2089.2617)
-    task.wait(0.2)
-
-    local VirtualInputManager = game:GetService("VirtualInputManager")
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-    task.wait(0.05)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
-end)
-
-local autoEquipToolsFolder = Farm:AddFolder("Auto Tools")
-
-autoEquipToolsFolder:AddToggle("Auto Rep Farm (Muscle/Rock)", false, function(state)
+FarmSection:AddSwitch("Auto Rep Farm", function(state)
     getgenv()._AutoRepFarmEnabled = state
+    warn("[Auto Rep Farm] State changed to:", state and "ON" or "OFF")
 end)
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local Stats = game:GetService("Stats")
+local LocalPlayer = Players.LocalPlayer
 
 local PET_NAME = "Swift Samurai"
 local ROCK_NAME = "Rock5M"
 local PROTEIN_EGG_NAME = "ProteinEgg"
-local PROTEIN_EGG_INTERVAL = 30 * 60
-local REPS_PER_CYCLE = 160
+local PROTEIN_EGG_INTERVAL = 30 * 60 
+local REPS_PER_CYCLE = 180
 local REP_DELAY = 0.01
-local ROCK_INTERVAL = 5
-local MAX_PING = 700
+local ROCK_INTERVAL = 1
+local MAX_PING = 1100
 
 local HumanoidRootPart
 local lastProteinEggTime = 0
@@ -532,6 +116,7 @@ if not getgenv()._AutoRepFarmLoop then
             if getgenv()._AutoRepFarmEnabled then
                 local ping = getPing()
                 if ping > MAX_PING then
+                    warn("[Auto Rep Farm] High ping ("..math.floor(ping).."ms), pausing for 5s...")
                     task.wait(5)
                 else
                     if LocalPlayer:FindFirstChild("muscleEvent") then
@@ -558,3 +143,528 @@ if not getgenv()._AutoRepFarmLoop then
         end
     end)
 end
+
+
+local AutoEatSpin = FarmSection:AddSection("2. Auto Eat / Spin")
+
+local autoEatEnabled = false
+local function eatProteinEggNew()
+    local player = game:GetService("Players").LocalPlayer
+    local backpack = player:WaitForChild("Backpack")
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    local egg = backpack:FindFirstChild("Protein Egg")
+    if egg then
+        
+        ReplicatedStorage.rEvents.eatEvent:FireServer("eat", egg)
+        print("[AutoEgg] Protein Egg consumed.")
+    else
+        warn("[AutoEgg] Protein Egg not found in Backpack.")
+    end
+end
+
+task.spawn(function()
+    while true do
+        if autoEatEnabled then
+            eatProteinEggNew()
+            task.wait(1800) 
+        else
+            task.wait(1)
+        end
+    end
+end)
+
+AutoEatSpin:AddSwitch("Auto Eat Egg (30 Min)", function(state)
+    autoEatEnabled = state
+    print(state and "[AutoEgg] Activated." or "[AutoEgg] Deactivated.")
+end)
+
+AutoEatSpin:AddButton("Auto Spin", function()
+    _G.AutoSpinWheel = not _G.AutoSpinWheel 
+    
+    if _G.AutoSpinWheel then
+        print("[Auto Spin] Activated.")
+        task.spawn(function()
+            while _G.AutoSpinWheel and task.wait(0.1) do
+                game:GetService("ReplicatedStorage").rEvents.openFortuneWheelRemote:InvokeServer(
+                    "openFortuneWheel",
+                    game:GetService("ReplicatedStorage").fortuneWheelChances["Fortune Wheel"]
+                )
+            end
+        end)
+    else
+        print("[Auto Spin] Deactivated.")
+    end
+end)
+
+
+local AntiUtility = FarmSection:AddSection("3. Anti AFK / Lag / Utility")
+
+AntiUtility:AddSwitch("Anti AFK", function(state)
+    if state then
+        
+        if getgenv().AntiAfkExecuted and game:GetService("CoreGui"):FindFirstChild("thisoneissocoldww") then 
+            getgenv().AntiAfkExecuted = false
+            getgenv().zamanbaslaticisi = false
+            game:GetService("CoreGui").thisoneissocoldww:Destroy()
+        end
+        getgenv().AntiAfkExecuted = true
+
+        local thisoneissocoldww = Instance.new("ScreenGui")
+        local madebybloodofbatus = Instance.new("Frame")
+        local UICornerw = Instance.new("UICorner")
+        local DestroyButton = Instance.new("TextButton")
+        local uselesslabelone = Instance.new("TextLabel")
+        local timerlabel = Instance.new("TextLabel")
+        local uselesslabeltwo = Instance.new("TextLabel")
+        local fpslabel = Instance.new("TextLabel")
+        local uselesslabelthree = Instance.new("TextLabel")
+        local pinglabel = Instance.new("TextLabel")
+        local uselessframeone = Instance.new("Frame")
+        local UICornerww = Instance.new("UICorner")
+        local uselesslabelfour = Instance.new("TextLabel")
+
+        thisoneissocoldww.Name = "thisoneissocoldww"
+        thisoneissocoldww.Parent = game:GetService("CoreGui")
+        thisoneissocoldww.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+        madebybloodofbatus.Name = "madebybloodofbatus"
+        madebybloodofbatus.Parent = thisoneissocoldww
+        madebybloodofbatus.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        madebybloodofbatus.Position = UDim2.new(0.085,0,0.13,0)
+        madebybloodofbatus.Size = UDim2.new(0,225,0,96)
+        UICornerw.Parent = madebybloodofbatus
+
+        DestroyButton.Name = "DestroyButton"
+        DestroyButton.Parent = madebybloodofbatus
+        DestroyButton.BackgroundTransparency = 1
+        DestroyButton.Position = UDim2.new(0.87,0,0.02,0)
+        DestroyButton.Size = UDim2.new(0,27,0,15)
+        DestroyButton.Font = Enum.Font.SourceSans
+        DestroyButton.Text = "X"
+        DestroyButton.TextColor3 = Color3.fromRGB(255,255,255)
+        DestroyButton.TextSize = 14
+        DestroyButton.MouseButton1Click:Connect(function()
+            getgenv().AntiAfkExecuted = false
+            task.wait(0.1)
+            thisoneissocoldww:Destroy()
+        end)
+
+        uselesslabelone.Parent = madebybloodofbatus
+        uselesslabelone.BackgroundTransparency = 1
+        uselesslabelone.Position = UDim2.new(0.3,0,0,0)
+        uselesslabelone.Size = UDim2.new(0,95,0,24)
+        uselesslabelone.Font = Enum.Font.SourceSans
+        uselesslabelone.Text = "Anti Afk by Rafael (Chat GPT)" 
+        uselesslabelone.TextColor3 = Color3.fromRGB(255,255,255)
+        uselesslabelone.TextSize = 14
+
+        timerlabel.Parent = madebybloodofbatus
+        timerlabel.BackgroundTransparency = 1
+        timerlabel.Position = UDim2.new(0.65,0,0.68,0)
+        timerlabel.Size = UDim2.new(0,60,0,24)
+        timerlabel.Font = Enum.Font.SourceSans
+        timerlabel.Text = "0:0:0"
+        timerlabel.TextColor3 = Color3.fromRGB(255,255,255)
+        timerlabel.TextSize = 14
+
+        uselesslabeltwo.Parent = madebybloodofbatus
+        uselesslabeltwo.BackgroundTransparency = 1
+        uselesslabeltwo.Position = UDim2.new(0.03,0,0.37,0)
+        uselesslabeltwo.Size = UDim2.new(0,29,0,24)
+        uselesslabeltwo.Font = Enum.Font.SourceSans
+        uselesslabeltwo.Text = "Ping: "
+        uselesslabeltwo.TextColor3 = Color3.fromRGB(255,255,255)
+        uselesslabeltwo.TextSize = 14
+
+        fpslabel.Parent = madebybloodofbatus
+        fpslabel.BackgroundTransparency = 1
+        fpslabel.Position = UDim2.new(0.72,0,0.35,0)
+        fpslabel.Size = UDim2.new(0,55,0,24)
+        fpslabel.Font = Enum.Font.SourceSans
+        fpslabel.Text = "0"
+        fpslabel.TextColor3 = Color3.fromRGB(255,255,255)
+        fpslabel.TextSize = 14
+
+        uselesslabelthree.Parent = madebybloodofbatus
+        uselesslabelthree.BackgroundTransparency = 1
+        uselesslabelthree.Position = UDim2.new(0.5,0,0.35,0)
+        uselesslabelthree.Size = UDim2.new(0,26,0,24)
+        uselesslabelthree.Font = Enum.Font.SourceSans
+        uselesslabelthree.Text = "Fps: "
+        uselesslabelthree.TextColor3 = Color3.fromRGB(255,255,255)
+        uselesslabelthree.TextSize = 14
+
+        pinglabel.Parent = madebybloodofbatus
+        pinglabel.BackgroundTransparency = 1
+        pinglabel.Position = UDim2.new(0.2,0,0.37,0)
+        pinglabel.Size = UDim2.new(0,55,0,24)
+        pinglabel.Font = Enum.Font.SourceSans
+        pinglabel.Text = "0"
+        pinglabel.TextColor3 = Color3.fromRGB(255,255,255)
+        pinglabel.TextSize = 14
+        pinglabel.TextWrapped = true
+
+        uselessframeone.Parent = madebybloodofbatus
+        uselessframeone.BackgroundColor3 = Color3.fromRGB(255,255,255)
+        uselessframeone.Position = UDim2.new(0.004,0,0.24,0)
+        uselessframeone.Size = UDim2.new(0,224,0,5)
+        UICornerww.CornerRadius = UDim.new(0,50)
+        UICornerww.Parent = uselessframeone
+
+        uselesslabelfour.Parent = madebybloodofbatus
+        uselesslabelfour.BackgroundTransparency = 1
+        uselesslabelfour.Position = UDim2.new(0.05,0,0.81,0)
+        uselesslabelfour.Size = UDim2.new(0,95,0,12)
+        uselesslabelfour.Font = Enum.Font.SourceSans
+        uselesslabelfour.Text = "Anti-Afk Auto Enabled"
+        uselesslabelfour.TextColor3 = Color3.fromRGB(255,255,255)
+        uselesslabelfour.TextSize = 14
+
+        local Drag = madebybloodofbatus
+        local gsTween = game:GetService("TweenService")
+        local UserInputService = game:GetService("UserInputService")
+        local dragging, dragInput, dragStart, startPos
+        local function update(input)
+            local delta = input.Position - dragStart
+            local dragTime = 0.04
+            local SmoothDrag = {}
+            SmoothDrag.Position = UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
+            gsTween:Create(Drag,TweenInfo.new(dragTime,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),SmoothDrag):Play()
+        end
+        Drag.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                dragging = true
+                dragStart = input.Position
+                startPos = Drag.Position
+                input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then dragging = false end
+                end)
+            end
+        end)
+        Drag.InputChanged:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                dragInput = input
+            end
+        end)
+        UserInputService.InputChanged:Connect(function(input)
+            if input == dragInput and dragging then update(input) end
+        end)
+
+        local vu = game:GetService('VirtualUser')
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            vu:CaptureController()
+            vu:ClickButton2(Vector2.new())
+        end)
+
+        local RunService = game:GetService("RunService")
+        local sec = tick()
+        local FPS = {}
+        RunService.RenderStepped:Connect(function()
+            local fr = tick()
+            for i=#FPS,1,-1 do FPS[i+1] = (FPS[i]>=fr-1) and FPS[i] or nil end
+            FPS[1] = fr
+            local fps = math.floor((tick()-sec>=1 and #FPS) or (#FPS/(tick()-sec)))
+            fpslabel.Text = fps
+        end)
+
+        task.spawn(function()
+            while getgenv().AntiAfkExecuted do
+                task.wait(1)
+                local ping = math.floor(tonumber(game:GetService("Stats"):FindFirstChild("PerformanceStats").Ping:GetValue()))
+                pinglabel.Text = ping
+            end
+        end)
+
+        local saniye, dakika, saat = 0,0,0
+        getgenv().zamanbaslaticisi = true
+        task.spawn(function()
+            while getgenv().zamanbaslaticisi do
+                saniye = saniye + 1
+                task.wait(1)
+                if saniye>=60 then saniye=0;dakika=dakika+1 end
+                if dakika>=60 then dakika=0;saat=saat+1 end
+                timerlabel.Text = saat..":"..dakika..":"..saniye
+            end
+        end)
+    else
+        
+        getgenv().AntiAfkExecuted = false
+        getgenv().zamanbaslaticisi = false
+        if game:GetService("CoreGui"):FindFirstChild("thisoneissocoldww") then
+            game:GetService("CoreGui").thisoneissocoldww:Destroy()
+        end
+    end
+end)
+
+AntiUtility:AddSwitch("Anti Lag (Simple)", function(State)
+    local lighting = game:GetService("Lighting")
+    if State then
+        
+        for _, gui in pairs(LocalPlayer:GetService("PlayerGui"):GetChildren()) do
+            if gui:IsA("ScreenGui") then gui:Destroy() end
+        end
+        
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("ParticleEmitter") or obj:IsA("PointLight") or obj:IsA("SpotLight") or obj:IsA("SurfaceLight") then
+                obj:Destroy()
+            end
+        end
+        
+        for _, v in pairs(lighting:GetChildren()) do
+            if v:IsA("Sky") then v:Destroy() end
+        end
+        local darkSky = Instance.new("Sky")
+        darkSky.Name = "DarkSky"
+        darkSky.SkyboxBk = "rbxassetid://0"
+        darkSky.SkyboxDn = "rbxassetid://0"
+        darkSky.SkyboxFt = "rbxassetid://0"
+        darkSky.SkyboxLf = "rbxassetid://0"
+        darkSky.SkyboxRt = "rbxassetid://0"
+        darkSky.SkyboxUp = "rbxassetid://0"
+        darkSky.Parent = lighting
+        
+        
+        lighting.Brightness = 0
+        lighting.ClockTime = 0
+        lighting.TimeOfDay = "00:00:00"
+        lighting.OutdoorAmbient = Color3.new(0,0,0)
+        lighting.Ambient = Color3.new(0,0,0)
+        lighting.FogColor = Color3.new(0,0,0)
+        lighting.FogEnd = 100
+        
+        
+        task.spawn(function()
+            while State do
+                task.wait(5)
+                if not lighting:FindFirstChild("DarkSky") then
+                    darkSky:Clone().Parent = lighting
+                end
+            end
+        end)
+    end
+end)
+
+AntiUtility:AddSwitch("Hide All Frames", function(bool)
+    local rSto = game:GetService("ReplicatedStorage")
+    for _, obj in pairs(rSto:GetChildren()) do
+        if obj.Name:match("Frame$") then
+            obj.Visible = not bool
+        end
+    end
+    print(bool and "[Hide All Frames] Activated (Frames Hidden)." or "[Hide All Frames] Deactivated (Frames Visible).")
+end)
+
+AntiUtility:AddButton("Full Anti Lag (Optimization)", function()
+    for _, v in pairs(game:GetDescendants()) do
+        if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
+            v.Enabled = false
+        end
+    end
+
+    local lighting = game:GetService("Lighting")
+    lighting.GlobalShadows = false
+    lighting.FogEnd = 9e9
+    lighting.Brightness = 0
+
+    settings().Rendering.QualityLevel = 1
+
+    for _, v in pairs(game:GetDescendants()) do
+        if v:IsA("Decal") or v:IsA("Texture") then
+            v.Transparency = 1
+        elseif v:IsA("BasePart") and not v:IsA("MeshPart") then
+            v.Material = Enum.Material.SmoothPlastic
+            if v.Parent and (v.Parent:FindFirstChild("Humanoid") or v.Parent.Parent:FindFirstChild("Humanoid")) then
+            else
+                v.Reflectance = 0
+            end
+        end
+    end
+
+    for _, v in pairs(lighting:GetChildren()) do
+        if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("DepthOfFieldEffect") then
+            v.Enabled = false
+        end
+    end
+
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Anti Lag Activated",
+        Text = "Full optimization applied!",
+        Duration = 5
+    })
+end)
+
+
+local TPPets = FarmSection:AddSection("4. Teleports / Pets")
+
+TPPets:AddButton("Equip Swift Samurai (Max 8)", function()
+    print("Button pressed: equipping up to 8 Swift Samurai")
+
+    local LocalPlayer = game:GetService("Players").LocalPlayer
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    
+    local petsFolder = LocalPlayer:FindFirstChild("petsFolder")
+    if not petsFolder then return end
+
+    for _, folder in pairs(petsFolder:GetChildren()) do
+        if folder:IsA("Folder") then
+            for _, pet in pairs(folder:GetChildren()) do
+                ReplicatedStorage.rEvents.equipPetEvent:FireServer("unequipPet", pet)
+            end
+        end
+    end
+    task.wait(0.1)
+
+    
+    local equipped = 0
+    local maxEquip = 8
+    
+    for _, folder in pairs(petsFolder:GetChildren()) do
+        if folder:IsA("Folder") then
+            for _, pet in pairs(folder:GetChildren()) do
+                if pet.Name == "Swift Samurai" and equipped < maxEquip then
+                    ReplicatedStorage.rEvents.equipPetEvent:FireServer("equipPet", pet)
+                    equipped = equipped + 1
+                    print("Equipped Swift Samurai #" .. equipped)
+                end
+            end
+        end
+    end
+
+    print("Equipped " .. equipped .. " Swift Samurai")
+end)
+
+TPPets:AddButton("Jungle Squat TP/Use", function()
+    local char = LocalPlayer.Character
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        char:SetPrimaryPartCFrame(CFrame.new(-8374.25586, 34.5933418, 2932.44995))
+        
+        local machine = workspace:FindFirstChild("machinesFolder")
+        if machine and machine:FindFirstChild("Jungle Squat") then
+            local seat = machine["Jungle Squat"]:FindFirstChild("interactSeat")
+            if seat then
+                game:GetService("ReplicatedStorage").rEvents.machineInteractRemote:InvokeServer("useMachine", seat)
+            end
+        end
+        print("[Jungle Squat] Action executed.")
+    else
+        warn("[Jungle Squat] Character not found or missing HumanoidRootPart.")
+    end
+end)
+
+TPPets:AddButton("Jungle Lift TP/Use", function()
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+    local hrp = char:WaitForChild("HumanoidRootPart")
+
+    hrp.CFrame = CFrame.new(-8652.8672, 29.2667, 2089.2617)
+    task.wait(0.2)
+
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    task.wait(0.05)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+
+    print("[Jungle Lift] Teleport and interaction executed.")
+end)
+
+
+local RebirthFolder = FarmSection:AddSection("5. OP Rebirth")
+
+RebirthFolder:AddSwitch("Fast Rebirths", function(state)
+    getgenv().AutoFarming = state
+    if state then
+        task.spawn(function()
+            local a = ReplicatedStorage
+            local c = LocalPlayer
+            local function equipPetByName(name)
+                local folderPets = c:FindFirstChild("petsFolder")
+                if not folderPets then return end
+                for _, folder in pairs(folderPets:GetChildren()) do
+                    if folder:IsA("Folder") then
+                        for _, pet in pairs(folder:GetChildren()) do
+                            if pet.Name == name then
+                                a.rEvents.equipPetEvent:FireServer("equipPet", pet)
+                            end
+                        end
+                    end
+                end
+            end
+            local function unequipAllPets()
+                local f = c:FindFirstChild("petsFolder")
+                if not f then return end
+                for _, folder in pairs(f:GetChildren()) do
+                    if folder:IsA("Folder") then
+                        for _, pet in pairs(folder:GetChildren()) do
+                            a.rEvents.equipPetEvent:FireServer("unequipPet", pet)
+                        end
+                    end
+                end
+                task.wait(0.1)
+            end
+            local function getGoldenRebirthCount()
+                local g = c:FindFirstChild("ultimatesFolder")
+                if g and g:FindFirstChild("Golden Rebirth") then
+                    return g["Golden Rebirth"].Value
+                end
+                return 0
+            end
+            local function getStrengthRequiredForRebirth()
+                local rebirths = c.leaderstats.Rebirths.Value
+                local baseStrength = 10000 + (5000 * rebirths)
+                local golden = getGoldenRebirthCount()
+                if golden >= 1 and golden <= 5 then
+                    baseStrength = baseStrength * (1 - golden * 0.1)
+                end
+                return math.floor(baseStrength)
+            end
+            while getgenv().AutoFarming do
+                local requiredStrength = getStrengthRequiredForRebirth()
+                unequipAllPets()
+                equipPetByName("Swift Samurai")
+                while c.leaderstats.Strength.Value < requiredStrength and getgenv().AutoFarming do
+                    for _ = 1, 10 do
+                        c.muscleEvent:FireServer("rep")
+                    end
+                    task.wait()
+                end
+                if getgenv().AutoFarming then
+                    unequipAllPets()
+                    equipPetByName("Tribal Overlord")
+                    local oldRebirths = c.leaderstats.Rebirths.Value
+                    repeat
+                        a.rEvents.rebirthRemote:InvokeServer("rebirthRequest")
+                        task.wait(0.1)
+                    until c.leaderstats.Rebirths.Value > oldRebirths or not getgenv().AutoFarming
+                end
+                task.wait()
+            end
+        end)
+    end
+end)
+
+RebirthFolder:AddSwitch("Lock Position", function(Value)
+    if Value then
+        local currentPos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        getgenv().posLock = game:GetService("RunService").Heartbeat:Connect(function()
+            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = currentPos
+            end
+        end)
+        print("[Lock Position] Activated.")
+    else
+        if getgenv().posLock then
+            getgenv().posLock:Disconnect()
+            getgenv().posLock = nil
+        end
+        print("[Lock Position] Deactivated.")
+    end
+end)
+
+
+local StatsTab = Window:AddTab({Title = "Stats", Icon = "bar-chart-2"})
+local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})
+local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})
+local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})
+local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})
