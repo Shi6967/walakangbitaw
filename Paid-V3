@@ -994,12 +994,6 @@ rebirthsSection:AddToggle("AutoTeleportToggle", {
     end,
 })
 
-createRebirthsFarmSwitch("Rebirth Target", "function(text)")
-createRebirthsFarmSwitch("Auto Rebirth Target",")
-createRebirthsFarmSwitch("Auto Rebirth (Infinite)", {")
-createRebirthsFarmSwitch("Auto Size 1", {")
-createRebirthsFarmSwitch("Auto Teleport to Muscle King", {")
-
 Library:Notify({
 	Title = "AutoFarm Finalized",
 	Content = "All tabs and functionalities loaded successfully.",
