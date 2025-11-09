@@ -1,4 +1,4 @@
-local LIB_URL = "https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/Speedhub.UI.lua"
+local LIB_URL = "loadstring(game:HttpGet("https://raw.githubusercontent.com/Shi6967/walakangbitaw/refs/heads/main/Paid-V3",true))()"
 local ok, a, b, c = pcall(function()
 	local source = game:HttpGet(LIB_URL)
 	local fn = loadstring(source)
