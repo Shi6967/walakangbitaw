@@ -25,7 +25,7 @@ local Window = Library:CreateWindow({
 	SubTitle = "Version 1.0.0 | by Sen",
 	Size = UDim2.fromOffset(500, 335),
 	TabWidth = 150,
-	Theme = "Red",
+	Theme = "Blue",
 	Acrylic = false,
 })
 
@@ -407,7 +407,7 @@ local function AddButton(text, callback)
 end
 
 --// Create UI
-AddLabel("â±ï¸ Session Statistics", 24)
+AddLabel("Session Statistics", 24)
 local stopwatchLabel = AddLabel("Session Time: 0d 0h 0m 0s", 18)
 local customTimerLabel = AddLabel("Custom Timer: Not started", 18)
 
@@ -621,7 +621,7 @@ end
 Killer:AddToggle("AutoGoodKarma", {
 	Title = "Auto Good Karma",
 	Default = false,
-	Description = "Touch players with more evil than good to increase their good karma.",
+	Description = "",
 	Callback = function(state)
 		autoGoodKarma = state
 		task.spawn(function()
@@ -657,7 +657,7 @@ Killer:AddToggle("AutoGoodKarma", {
 Killer:AddToggle("AutoBadKarma", {
 	Title = "Auto Bad Karma",
 	Default = false,
-	Description = "Touch players with more good than evil to build their evil karma.",
+	Description = "",
 	Callback = function(state)
 		autoBadKarma = state
 		task.spawn(function()
@@ -1040,7 +1040,7 @@ end
 Killer:AddToggle("Punch_When_Dead_Combo", {
 	Title = "Punch When Dead | Combo (Protein Egg)",
 	Default = false,
-	Description = "Single toggle: NaN size, AutoPunch, Protein Egg, AntiFly, soft anti-lag, and auto-reset on death.",
+	Description = "",
 	Callback = function(state)
 		comboActive = state
 
@@ -1081,7 +1081,7 @@ local friendWhitelistActive = false
 Killer:AddToggle("AutoWhitelistFriends", {
 	Title = "Auto Whitelist Friends",
 	Default = false,
-	Description = "Automatically whitelist your Roblox friends.",
+	Description = "",
 	Callback = function(state)
 		friendWhitelistActive = state
 		if state then
@@ -1143,7 +1143,7 @@ Killer:AddInput("WhitelistRemove", {
 Killer:AddToggle("AutoKill", {
 	Title = "Auto Kill (Aura)",
 	Default = false,
-	Description = "Automatically touches other players to 'kill' them if applicable.",
+	Description = "",
 	Callback = function(state)
 		autoKill = state
 		task.spawn(function()
@@ -1270,7 +1270,7 @@ end)
 Killer:AddToggle("StartKillTarget", {
 	Title = "Start Kill Target(s)",
 	Default = false,
-	Description = "Attack players listed in the target list.",
+	Description = "",
 	Callback = function(state)
 		killTarget = state
 		task.spawn(function()
@@ -1355,7 +1355,7 @@ end)
 Killer:AddToggle("ViewPlayer", {
 	Title = "View Player",
 	Default = false,
-	Description = "Switch camera to follow selected player.",
+	Description = "",
 	Callback = function(bool)
 		spying = bool
 		local cam = workspace.CurrentCamera
@@ -1479,7 +1479,7 @@ end
 -- Button: Remove Punch Anim (sets up blocking and override)
 Killer:AddButton({
 	Title = "Remove Punch Anim",
-	Description = "Block punch animations and override tool activation.",
+	Description = "",
 	Callback = function()
 		setupAnimationBlocking()
 		overrideToolActivation()
@@ -1551,7 +1551,7 @@ end
 
 Killer:AddButton({
 	Title = "Recover Punch Anim",
-	Description = "Disconnect animation blocking and restore normal behavior.",
+	Description = "",
 	Callback = function()
 		RecoveryPunch()
 		Library:Notify({Title="Recovery", Content="Punch animation blocking removed.", Duration = 3})
@@ -1979,7 +1979,7 @@ end
 rocksSection:AddToggle("Farming_StartRocks", {
 	Title = "Start Auto Rocks",
 	Default = false,
-	Description = "Auto interact with selected rock when durability threshold is met.",
+	Description = "",
 	Callback = function(state)
 		getgenv().autoFarm = state
 		task.spawn(function()
@@ -2029,12 +2029,12 @@ local runFastRep = false
 local repsPerTick = 1
 
 -- Create the Fast Rep section inside your farmingTab
-local FastRepSection = farmingTab:AddSection("âš¡ Fast Rep")
+local FastRepSection = farmingTab:AddSection("Fast Rep")
 
 -- Rep Speed Dropdown (1â€“30)
 local RepSpeedDropdown = FastRepSection:AddDropdown("FastRep_Speed", {
 	Title = "Rep Speed",
-	Description = "Choose how many reps per tick (1â€“30)",
+	Description = "",
 	Values = {},
 	Default = "1",
 	Callback = function(value)
@@ -2054,14 +2054,14 @@ local function fastRepLoop()
 		for i = 1, repsPerTick do
 			muscleEvent:FireServer("rep")
 		end
-		task.wait(0.02)
+		task.wait(0.0003)
 	end
 end
 
 -- Fast Rep Toggle
 FastRepSection:AddToggle("FastRep_Toggle", {
 	Title = "Fast Rep",
-	Description = "Rapidly performs reps using muscleEvent",
+	Description = "",
 	Default = false,
 	Callback = function(state)
 		runFastRep = state
@@ -2102,7 +2102,7 @@ end)
 
 FastRepSection:AddToggle("Auto_Eat_Egg_30", {
 	Title = "Auto Eat Egg || 30 Minutes",
-	Description = "Automatically eats Protein Egg every 30 minutes",
+	Description = "",
 	Default = false,
 	Callback = function(state)
 		autoEat30 = state
@@ -2123,7 +2123,7 @@ end)
 
 FastRepSection:AddToggle("Auto_Eat_Egg_60", {
 	Title = "Auto Eat Egg || 60 Minutes",
-	Description = "Automatically eats Protein Egg every 60 minutes",
+	Description = "",
 	Default = false,
 	Callback = function(state)
 		autoEat60 = state
@@ -2136,7 +2136,7 @@ local HideFramesSection = farmingTab:AddSection("Hide Features")
 
 HideFramesSection:AddToggle("Hide_Frames", {
 	Title = "Hide Frames",
-	Description = "Toggle to hide or show all objects ending with 'Frame' in ReplicatedStorage.",
+	Description = "",
 	Default = false,
 	Callback = function(state)
 		for _, obj in pairs(rSto:GetChildren()) do
@@ -2308,13 +2308,13 @@ local AutoRebirthSection = Rebirths:AddSection("Op Fast Rebirthing")
 
 AutoRebirthSection:AddToggle("Fast_Rebirth", {
 	Title = "Fast Rebirth",
-	Description = "Automatically farm strength and perform rebirths",
+	Description = "",
 	Default = false,
 	Callback = function(state)
 		getgenv().AutoFarming = state
 
 		if state then
-			warn("âš¡ AutoFarming ACTIVADO")
+			warn(" AutoFarming ACTIVATE")
 
 			task.spawn(function()
 				while getgenv().AutoFarming do
@@ -2344,10 +2344,10 @@ AutoRebirthSection:AddToggle("Fast_Rebirth", {
 						task.wait(0.1)
 					until LocalPlayer.leaderstats.Rebirths.Value > oldRebirths or not getgenv().AutoFarming
 
-					print("Renacimiento hecho. Reiniciando ciclo.")
+					print("")
 				end
 
-				print("ðŸ›‘ AutoFarming DETENIDO")
+				print(" AutoFarming ")
 			end)
 		else
 			warn("ðŸ›‘ AutoFarming DESACTIVADO")
