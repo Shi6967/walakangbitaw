@@ -21,8 +21,8 @@ else
 end
 
 local Window = Library:CreateWindow({
-	Title = " H3LL CLAN SCRIPT ",
-	SubTitle = "Version 1.0.0 | by Sen",
+	Title = " K13 CLAN SCRIPT ",
+	SubTitle = "Version 1.0.0 | by ISHI",
 	Size = UDim2.fromOffset(500, 335),
 	TabWidth = 150,
 	Theme = "Blue",
